@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="/fonthand/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Admin Dashboard</h1>
+
+    <h3>Login</h3>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+
+    <h3>Set Election</h3>
+    <input type="datetime-local" id="start">
+    <input type="datetime-local" id="end">
+    <button onclick="setElection()">Start</button>
+
+    <h3>Add Candidate</h3>
+    <input id="name" placeholder="Name">
+    <input id="party" placeholder="Party">
+    <button onclick="addCandidate()">Add</button>
+
+    <h3>Candidate List</h3>
+    <div id="adminCandList"></div>
+
+    <h3>Results</h3>
+    <button onclick="loadResults()">View Results</button>
+    <div id="results"></div>
+
+</div>
+
+<script src="/fonthand/js/admin.js"></script>
+</body>
+</html>

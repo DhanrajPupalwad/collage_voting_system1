@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fonthand College — General Secretary Election</title>
+ <link rel="stylesheet" href="/fonthand/css/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">Fonthand <span>College</span></div>
+  <div class="nav-links">
+    <span class="nav-user" id="navUser"></span>
+    <button class="nav-btn" onclick="showPage('home')" id="navHome">Home</button>
+    <button class="nav-btn" id="navResults" onclick="goResults()" style="display:none">Results</button>
+    <button class="nav-btn" id="navLogout"  onclick="logout()"    style="display:none">Logout</button>
+  </div>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge">🗳 Academic Year 2024–25</div>
+    <h1>General Secretary<br><em>Election</em></h1>
+    <p>Your voice shapes tomorrow. Cast your vote for Fonthand College's next General Secretary.</p>
+    <div class="hero-cards">
+      <div class="hero-card student" onclick="showPage('student-login')">
+        <div class="hero-card-icon">🎓</div>
+        <h3>Student Portal</h3>
+        <p>Register, login &amp; cast your vote</p>
+      </div>
+      <div class="hero-card admin" onclick="showPage('admin-login')">
+        <div class="hero-card-icon">🛡</div>
+        <h3>Admin Panel</h3>
+        <p>Manage candidates &amp; election</p>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem">
+      <button class="btn btn-outline" onclick="goPublicResults()">📊 View Live Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STUDENT LOGIN / REGISTER ══════════ -->
+<div class="page" id="page-student-login">
+  <div class="login-wrap">
+    <div class="page-header">
+      <h2>✏️ Student Portal</h2>
+      <p>Register or login to participate in the election</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tab-login"    onclick="switchTab('login')">Login</button>
+      <button class="tab"        id="tab-register" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="tab-content-login">
+      <div class="card">
+        <div id="loginAlert" class="alert"></div>
+        <div class="form-group">
+          <label class="form-label">📧 Email Address</label>
+          <input class="form-input" id="loginEmail" type="email" placeholder="yourname@fonthand.edu">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🔑 Password</label>
+          <input class="form-input" id="loginPass" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-blue btn-full" onclick="studentLogin()">Login to Vote →</button>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="tab-content-register" style="display:none">
+      <div class="card">
+        <div id="regAlert" class="alert"></div>
+        <div class="form-group">
+          <label class="form-label">👤 Full Name</label>
+          <input class="form-input" id="regName" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📧 Email Address</label>
+          <input class="form-input" id="regEmail" type="email" placeholder="yourname@fonthand.edu">
+        </div>
+        <!-- <div class="form-group">
+          <label class="form-label">🎓 Student ID</label>
+          <input class="form-input" id="regId" placeholder="e.g. FC2024001">
+        </div> -->
+        <div class="form-group">
+          <label class="form-label">🔑 Password</label>
+          <input class="form-input" id="regPass" type="password" placeholder="Minimum 6 characters">
+        </div>
+        <button class="btn btn-blue btn-full" onclick="studentRegister()">Create Account →</button>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:1rem;font-family:var(--hand);color:var(--ink-light)">
+      <a href="#" onclick="showPage('home')" style="color:var(--accent)">← Back to Home</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN LOGIN ══════════ -->
+<div class="page" id="page-admin-login">
+  <div class="login-wrap">
+    <div class="page-header">
+      <h2>🛡 Admin Login</h2>
+      <p>Restricted access — authorized personnel only</p>
+    </div>
+    <div class="card">
+      <div id="adminLoginAlert" class="alert"></div>
+      <div class="form-group">
+        <label class="form-label">👤 Username</label>
+        <input class="form-input" id="adminUser" placeholder="admin">
+      </div>
+      <div class="form-group">
+        <label class="form-label">🔑 Password</label>
+        <input class="form-input" id="adminPass" type="password" placeholder="••••••••">
+      </div>
+      <small style="color:var(--ink-light);font-style:italic;display:block;margin-bottom:0.8rem;font-size:0.8rem">
+        Default credentials: admin / admin123
+      </small>
+      <button class="btn btn-accent btn-full" onclick="adminLogin()">Login as Admin →</button>
+    </div>
+    <p style="text-align:center;margin-top:1rem;font-family:var(--hand);color:var(--ink-light)">
+      <a href="#" onclick="showPage('home')" style="color:var(--accent)">← Back to Home</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ STUDENT DASHBOARD ══════════ -->
+<div class="page" id="page-student-dash">
+  <div class="page-header">
+    <h2 id="studentWelcome">👋 Welcome!</h2>
+    <p>Fonthand College — General Secretary Election 2024–25</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" id="dashCandCount">—</div>
+      <div class="stat-lbl">Candidates</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="dashVoteStatus">—</div>
+      <div class="stat-lbl">Your Vote</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="dashTotalVotes">—</div>
+      <div class="stat-lbl">Total Votes Cast</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-family:var(--hand);font-size:1.4rem;margin-bottom:1rem">Quick Actions</h3>
+      <div style="display:flex;flex-direction:column;gap:0.8rem">
+        <button class="btn btn-blue btn-full" onclick="showPage('vote')" id="voteBtn">🗳 Cast Your Vote</button>
+        <button class="btn btn-outline btn-full" onclick="goResults()">📊 See Live Results</button>
+        <button class="btn btn-outline btn-full" onclick="logout()">↩ Logout</button>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-family:var(--hand);font-size:1.4rem;margin-bottom:1rem">Candidates Running</h3>
+      <div id="dashCandList" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ VOTING PAGE ══════════ -->
+<div class="page" id="page-vote">
+  <div class="page-header">
+    <h2>🗳 Cast Your Vote</h2>
+    <p>Select one candidate for General Secretary</p>
+  </div>
+  <div id="alreadyVotedMsg" class="alert alert-info" style="display:none">
+    ✅ You have already cast your vote in this election. Results are visible below.
+  </div>
+  <div id="voteList"></div>
+  <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+    <button class="btn btn-green" id="submitVoteBtn" onclick="submitVote()">✅ Submit Vote</button>
+    <button class="btn btn-outline" onclick="showPage('student-dash')">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════ PUBLIC RESULTS ══════════ -->
+<div class="page" id="page-results">
+  <div class="page-header">
+    <h2>📊 Election Results</h2>
+    <p>Fonthand College — General Secretary Election 2024–25</p>
+  </div>
+  <div id="winnerBanner"></div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" id="resTotalVotes">0</div>
+      <div class="stat-lbl">Total Votes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="resCandidates">0</div>
+      <div class="stat-lbl">Candidates</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="resVoters">0</div>
+      <div class="stat-lbl">Registered Voters</div>
+    </div>
+  </div>
+  <div class="card" id="resultsChart"></div>
+  <div style="margin-top:1.5rem;text-align:center">
+    <button class="btn btn-outline" onclick="renderResults()">🔄 Refresh</button>
+    <button class="btn btn-outline" onclick="showPage('home')" style="margin-left:8px">← Home</button>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN DASHBOARD ══════════ -->
+<div class="page" id="page-admin">
+  <div class="page-header">
+    <h2>🛡 Admin Dashboard</h2>
+    <p>Manage the election — Fonthand College General Secretary 2024–25</p>
+  </div>
+
+  <div class="stats-row" id="adminStats"></div>
+
+  <div class="tabs" style="margin-top:0.5rem">
+    <button class="tab active" id="atab-candidates" onclick="switchAdminTab('candidates')">Candidates</button>
+    <button class="tab"        id="atab-voters"     onclick="switchAdminTab('voters')">Voters</button>
+    <button class="tab"        id="atab-results"    onclick="switchAdminTab('results')">Results</button>
+    <button class="tab"        id="atab-settings"   onclick="switchAdminTab('settings')">Settings</button>
+  </div>
+
+  <!-- CANDIDATES TAB -->
+  <div id="atab-content-candidates">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span>➕</span> Add Candidate</div>
+        <div id="addCandAlert" class="alert"></div>
+        <div class="form-group">
+          <label class="form-label">Candidate Name</label>
+          <input class="form-input" id="candName" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Party / Affiliation</label>
+          <input class="form-input" id="candParty" placeholder="e.g. Progressive Students Union">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Campaign Slogan</label>
+          <input class="form-input" id="candSlogan" placeholder="Short campaign message">
+        </div>
+        <button class="btn btn-green btn-full" onclick="addCandidate()">+ Add Candidate</button>
+      </div>
+      <div>
+        <div style="font-family:var(--hand);font-size:1.6rem;margin-bottom:1rem">Current Candidates</div>
+        <div id="adminCandList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOTERS TAB -->
+  <div id="atab-content-voters" style="display:none">
+    <div class="card">
+      <div class="card-title"><span>👥</span> Registered Voters</div>
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead>
+            <tr><th>#</th><th>Name</th><th>Email</th><th>Student ID</th><th>Status</th></tr>
+          </thead>
+          <tbody id="votersTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS TAB -->
+  <div id="atab-content-results" style="display:none">
+    <div class="card" id="adminResultsCard"></div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="atab-content-settings" style="display:none">
+    <div class="card" style="max-width:480px">
+      <div class="card-title"><span>⚙️</span> Election Settings</div>
+      <div class="form-group">
+        <label class="form-label">Election Title</label>
+        <input class="form-input" id="elecTitle" value="General Secretary Election 2024–25">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Start Date &amp; Time</label>
+        <input class="form-input" id="elecStart" type="datetime-local">
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Date &amp; Time</label>
+        <input class="form-input" id="elecEnd" type="datetime-local">
+      </div>
+      <button class="btn btn-gold btn-full" onclick="saveSettings()">💾 Save Settings</button>
+      <hr class="ink-line">
+      <div style="font-family:var(--hand);font-size:1.3rem;color:var(--accent);margin-bottom:0.8rem">⚠️ Danger Zone</div>
+      <button class="btn btn-danger btn-full" onclick="resetElection()">🗑 Reset All Votes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EDIT CANDIDATE MODAL ══════════ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>✏️ Edit Candidate</h3>
+    <input type="hidden" id="editCandId">
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input class="form-input" id="editCandName">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Party</label>
+      <input class="form-input" id="editCandParty">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Slogan</label>
+      <input class="form-input" id="editCandSlogan">
+    </div>
+    <div style="display:flex;gap:0.8rem;margin-top:1rem">
+      <button class="btn btn-green"   onclick="saveEdit()">✅ Save</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CONFIRM MODAL ══════════ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <h3 id="confirmTitle">Are you sure?</h3>
+    <p id="confirmMsg" style="color:var(--ink-light);margin-bottom:1.5rem;font-size:0.95rem"></p>
+    <div style="display:flex;gap:0.8rem">
+      <button class="btn btn-danger"  id="confirmYes">Confirm</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+
+<script src="/fonthand/js/router.js"></script>
+<script src="/fonthand/js/auth.js"></script>
+<script src="/fonthand/js/vote.js"></script>
+<script src="/fonthand/js/results.js"></script>
+<script src="/fonthand/js/admin.js"></script>
+<script>
+  // Close modals when clicking overlay background
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) closeModal(); });
+  });
+</script>
+
+</body>
+</html>
